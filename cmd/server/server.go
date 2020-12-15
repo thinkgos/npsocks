@@ -2,10 +2,10 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/google/gops/agent"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/thinkgos/go-core-package/lib/textcolor"
@@ -14,7 +14,9 @@ import (
 	"github.com/thinkgos/only-socks5/deployed"
 	"github.com/thinkgos/only-socks5/pkg/builder"
 	"github.com/thinkgos/only-socks5/pkg/infra"
+	"github.com/thinkgos/only-socks5/pkg/izap"
 	"github.com/thinkgos/only-socks5/pkg/sword"
+	"github.com/thinkgos/only-socks5/pkg/tip"
 )
 
 var configFile string
@@ -38,13 +40,14 @@ func init() {
 
 func setup(cmd *cobra.Command, args []string) {
 	viper.BindPFlags(cmd.Flags()) // nolint: errcheck
-	// viper.SetEnvPrefix("oam")
+	// viper.SetEnvPrefix("onlys")
 	// // OAM_CONFIGFILE
 	// viper.BindEnv("config") // nolint: errcheck
 
 	// 1. 读取配置
 	deployed.SetupConfig(configFile)
-
+	deployed.SetupLogger()
+	infra.WritePidFile()
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -54,19 +57,34 @@ func run(cmd *cobra.Command, args []string) error {
 		infra.HandlerError(agent.Listen(deployed.ViperGops()))
 	}()
 
+	showTip()
+
 	// Create a SOCKS5 server
 	server := socks5.NewServer(
-		socks5.WithLogger(socks5.NewLogger(log.New(os.Stdout, "socks5: ", log.LstdFlags))),
+		socks5.WithLogger(izap.Sugar),
 		socks5.WithGPool(sword.AntsPool),
 	)
 
-	// Create SOCKS5 proxy on localhost port 8000
-	if err := server.ListenAndServe("tcp", ":10800"); err != nil {
-		panic(err)
-	}
-	return nil
+	// Create SOCKS5 proxy on config addr
+	return server.ListenAndServe("tcp", deployed.AppConfig.Addr())
 }
 
 func postRun(*cobra.Command, []string) {
+	infra.RemovePidFile()
+}
 
+func showTip() {
+	t := tip.Tip{
+		textcolor.Red(infra.Banner),
+		textcolor.Green(deployed.AppConfig.Name),
+		textcolor.Magenta(builder.Version),
+		textcolor.Magenta("-h"),
+		textcolor.Green("Server run at:"),
+		infra.LanIP(),
+		deployed.AppConfig.Port,
+		textcolor.Green("Server run on PID:"),
+		textcolor.Red(cast.ToString(os.Getpid())),
+		textcolor.Magenta("Control + C"),
+	}
+	tip.Show(t)
 }

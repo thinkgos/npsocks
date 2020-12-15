@@ -3,18 +3,17 @@ package deployed
 import (
 	"log"
 
-	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 
 	"github.com/thinkgos/only-socks5/pkg/infra"
 )
 
-var FeatureConfig = new(Feature)
 var AppConfig = new(Application)
 
 func init() {
 	RegisterViperDefault(
 		ViperApplicationDefault,
+		ViperLoggerDefault,
 	)
 }
 
@@ -22,20 +21,12 @@ func init() {
 func SetupConfig(path string) {
 	err := LoadConfig(path)
 	if err != nil {
-		log.Fatalf("Parse config file failed: %+v", err)
+		log.Fatalf("warning:Parse config file failed: %+v", err)
 	}
-	viper.OnConfigChange(func(in fsnotify.Event) {
-		// TODO: 防止重复操作
-		c := viper.Sub("feature")
-		FeatureConfig.DataScope.Store(c.GetBool("dataScope"))
-		FeatureConfig.OperDB.Store(c.GetBool("operDB"))
-		FeatureConfig.LoginDB.Store(c.GetBool("loginDB"))
-	})
-	viper.WatchConfig()
+	// viper.OnConfigChange(func(in fsnotify.Event) {})
+	// viper.WatchConfig()
 
 	AppConfig = ViperApplication()
-	FeatureConfig = ViperFeature()
-
 }
 
 // 如果filename为空,将使用config.yaml配置文件,并在当前文件搜索

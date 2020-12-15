@@ -5,6 +5,16 @@ import (
 	"github.com/thinkgos/only-socks5/pkg/izap"
 )
 
+func ViperLoggerDefault() {
+	viper.SetDefault("logger.level", "error")
+	viper.SetDefault("logger.console", "console")
+	viper.SetDefault("logger.encodeLevel", "LowercaseLevelEncoder")
+	viper.SetDefault("logger.writer", "console")
+	viper.SetDefault("logger.path", "temp")
+
+	viper.SetDefault("logger.fileName", "onlys.log")
+}
+
 func ViperLogger() izap.Config {
 	c := viper.Sub("logger")
 	return izap.Config{
