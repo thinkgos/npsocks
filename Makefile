@@ -28,7 +28,7 @@ flags = -ldflags "-X '${path}.BuildTime=`date "+%F %T %z"`' \
 	-X '${path}.Name=${name}' \
 	-X '${path}.Model=${model}' \
 	-X '${path}.Version=${version}' \
-	-X '${path}.APIVersion=${apiVersion}' -s -w"
+	-X '${path}.APIVersion=${apiVersion}' -w" # -s 会导致gops识别不了版本
 
 system:
 	@echo "----> system executable building..."
@@ -54,7 +54,7 @@ help:
 	@echo " make clean   -- clean build files"
 	@echo " ------------- How to build ------------- "
 
-.PHONY: system run prepare clean help
+.PHONY: system run clean help
 
 
 
