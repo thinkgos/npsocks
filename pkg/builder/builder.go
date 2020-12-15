@@ -2,17 +2,17 @@ package builder
 
 var (
 	// BuildTime 编译日期 由外部ldflags指定
-	BuildTime = ""
+	BuildTime = "unknown"
 	// GitCommit git提交版本(短) 由外部ldflags指定
-	GitCommit = ""
+	GitCommit = "unknown"
 	// GitFullCommit git提交版本(完整) 由外部ldflags指定
-	GitFullCommit = ""
+	GitFullCommit = "unknown"
 	// Version 版本 由外部ldflags指定
-	Version = "v0.0.1 Beta"
+	Version = "unknown"
 	// APIVersion api版本 由外部ldflags指定
-	APIVersion = ""
+	APIVersion = "unknown"
 	// Model 型号 由外部ldflags指定
-	Model = ""
+	Model = "unknown"
 	// Name 应用名称 由外部ldflags指定
-	Name = ""
+	Name = "unknown"
 )

@@ -41,9 +41,6 @@ system:
 run: system
 	@${BinDir}/${execveFile} server
 
-prepare:
-	@go generate ${ProjectDir}/...
-
 clean:
 	@echo "----> cleaning..."
 	@go clean
@@ -54,7 +51,6 @@ help:
 	@echo " ------------- How to build ------------- "
 	@echo " make         -- build target for system"
 	@echo " run          -- build and run target for system"
-	@echo " make prepare -- go generate"
 	@echo " make clean   -- clean build files"
 	@echo " ------------- How to build ------------- "
 

@@ -2,7 +2,10 @@ package server
 
 import (
 	"fmt"
+	"net"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/google/gops/agent"
 	"github.com/spf13/cast"
@@ -41,7 +44,7 @@ func init() {
 func setup(cmd *cobra.Command, args []string) {
 	viper.BindPFlags(cmd.Flags()) // nolint: errcheck
 	// viper.SetEnvPrefix("onlys")
-	// // OAM_CONFIGFILE
+	// // ONLYS_CONFIGFILE
 	// viper.BindEnv("config") // nolint: errcheck
 
 	// 1. 读取配置
@@ -64,9 +67,22 @@ func run(cmd *cobra.Command, args []string) error {
 		socks5.WithLogger(izap.Sugar),
 		socks5.WithGPool(sword.AntsPool),
 	)
+	ln, err := net.Listen("tcp", deployed.AppConfig.Addr())
+	if err != nil {
+		return err
+	}
+	go func() {
+		server.Serve(ln)
+	}()
 
-	// Create SOCKS5 proxy on config addr
-	return server.ListenAndServe("tcp", deployed.AppConfig.Addr())
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	<-stop
+
+	fmt.Println(textcolor.Red("close server..."))
+
+	return ln.Close()
 }
 
 func postRun(*cobra.Command, []string) {
@@ -75,16 +91,16 @@ func postRun(*cobra.Command, []string) {
 
 func showTip() {
 	t := tip.Tip{
-		textcolor.Red(infra.Banner),
-		textcolor.Green(deployed.AppConfig.Name),
-		textcolor.Magenta(builder.Version),
-		textcolor.Magenta("-h"),
-		textcolor.Green("Server run at:"),
-		infra.LanIP(),
-		deployed.AppConfig.Port,
-		textcolor.Green("Server run on PID:"),
-		textcolor.Red(cast.ToString(os.Getpid())),
-		textcolor.Magenta("Control + C"),
+		Banner:      textcolor.Red(infra.Banner),
+		Name:        textcolor.Green(deployed.AppConfig.Name),
+		Version:     textcolor.Magenta(builder.Version),
+		H:           textcolor.Magenta("-h"),
+		ServerTitle: textcolor.Green("Server run at:"),
+		ExtranetIP:  infra.LanIP(),
+		Port:        deployed.AppConfig.Port,
+		PidTitle:    textcolor.Green("Server run on PID:"),
+		PID:         textcolor.Red(cast.ToString(os.Getpid())),
+		Kill:        textcolor.Magenta("Control + C"),
 	}
 	tip.Show(t)
 }
