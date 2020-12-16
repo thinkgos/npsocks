@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/thinkgos/go-core-package/lib/textcolor"
 
+	"github.com/thinkgos/only-socks5/cmd/daemon"
 	"github.com/thinkgos/only-socks5/cmd/server"
 	"github.com/thinkgos/only-socks5/cmd/version"
 	"github.com/thinkgos/only-socks5/pkg/builder"
@@ -17,6 +18,11 @@ func init() {
 	rootCmd.AddCommand(
 		version.Cmd,
 		server.Cmd,
+		daemon.CmdInstall,
+		daemon.CmdRemove,
+		daemon.CmdStart,
+		daemon.CmdStop,
+		daemon.CmdStatus,
 	)
 }
 

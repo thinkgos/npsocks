@@ -1,0 +1,8 @@
+# dev开发环境 debug测试环境 prod线上环境
+mode: dev
+# 服务名称
+name: onlys
+# 服务器ip，默认使用 0.0.0.0
+host: 0.0.0.0
+# 服务端口号
+port: 8000

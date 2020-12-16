@@ -4,8 +4,6 @@ import (
 	"net"
 
 	"github.com/spf13/viper"
-
-	"github.com/thinkgos/only-socks5/pkg/infra"
 )
 
 type Application struct {
@@ -19,11 +17,6 @@ type Application struct {
 
 func (sf Application) Addr() string {
 	return net.JoinHostPort(sf.Host, sf.Port)
-}
-
-func ViperApplicationDefault() {
-	viper.SetDefault("mode", infra.ModeProd)
-	viper.SetDefault("port", "10800")
 }
 
 func ViperApplication() *Application {

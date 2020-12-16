@@ -2,9 +2,13 @@ package deployed
 
 import (
 	"log"
+	"path/filepath"
 
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
+	"github.com/thinkgos/go-core-package/extos"
 
+	"github.com/thinkgos/only-socks5/pkg/builder"
 	"github.com/thinkgos/only-socks5/pkg/infra"
 )
 
@@ -12,7 +16,6 @@ var AppConfig = new(Application)
 
 func init() {
 	RegisterViperDefault(
-		ViperApplicationDefault,
 		ViperLoggerDefault,
 	)
 }
@@ -35,14 +38,28 @@ func LoadConfig(filename string) error {
 	if filename != "" {
 		viper.SetConfigFile(filename)
 	} else {
-		viper.SetConfigName("config") // 文件名
-		viper.SetConfigType("yaml")   // 配置类型
-		viper.AddConfigPath(".")      // 增加搜索路径
+		configPath := ConfigPath()
+		defaultConfigName := "." + builder.Name
+		filePath := filepath.Join(configPath, defaultConfigName+".yaml")
+		if !extos.IsExist(filePath) {
+			if err := extos.WriteFile(filePath, []byte("")); err != nil {
+				return err
+			}
+		}
+		viper.AddConfigPath(configPath) // 增加搜索路径
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(defaultConfigName) // 文件名
 	}
 
 	ViperInitDefault()
 
 	return viper.ReadInConfig()
+}
+
+func ConfigPath() string {
+	home, err := homedir.Dir()
+	infra.HandlerError(err)
+	return filepath.Join(home, ".config", builder.Name)
 }
 
 func IsModeDebug() bool {

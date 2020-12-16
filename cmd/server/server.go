@@ -28,7 +28,7 @@ var mode string
 var Cmd = &cobra.Command{
 	Use:          "server",
 	Short:        "Start API server",
-	Example:      fmt.Sprintf("%s server -c config/config.yaml", builder.Name),
+	Example:      fmt.Sprintf("%s server -c config.yaml", builder.Name),
 	SilenceUsage: true,
 	PreRun:       setup,
 	RunE:         run,
@@ -36,9 +36,9 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&configFile, "config", "c", "config/config.yaml", "Start server with provided configuration file")
-	Cmd.PersistentFlags().StringVarP(&port, "port", "p", "8000", "Tcp port server listening on")
-	Cmd.PersistentFlags().StringVarP(&mode, "mode", "m", "dev", "server mode ; eg:dev,debug,prod")
+	Cmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", fmt.Sprintf("config file(default is $HOME/.config/%s/.%s.yaml)", builder.Name, builder.Name))
+	Cmd.PersistentFlags().StringVarP(&port, "port", "p", "10800", "Tcp port server listening on")
+	Cmd.PersistentFlags().StringVarP(&mode, "mode", "m", "prod", "server mode ; eg:dev,debug,prod")
 }
 
 func setup(cmd *cobra.Command, args []string) {
@@ -50,7 +50,7 @@ func setup(cmd *cobra.Command, args []string) {
 	// 1. 读取配置
 	deployed.SetupConfig(configFile)
 	deployed.SetupLogger()
-	infra.WritePidFile()
+	infra.WritePidFile(deployed.ConfigPath())
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -86,7 +86,7 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 func postRun(*cobra.Command, []string) {
-	infra.RemovePidFile()
+	infra.RemovePidFile(deployed.ConfigPath())
 }
 
 func showTip() {

@@ -1,0 +1,43 @@
+# dev开发环境 debug测试环境 prod线上环境
+mode: dev
+# 服务名称
+name: onlys
+# 服务器ip，默认使用 0.0.0.0
+host: 0.0.0.0
+# 服务端口号
+port: 8000
+readtimeout: 1s
+writertimeout: 2s
+
+logger:
+  # debug, info(默认), warn, error, dpanic, panic, fatal
+  level: debug
+  # 格式: json, console(默认)
+  format: json
+  # LowercaseLevelEncoder: 小写编码器(默认) LowercaseColorLevelEncoder: 小写编码器带颜色
+  # CapitalLevelEncoder: 大写编码器 CapitalColorLevelEncoder: 大写编码器带颜色
+  encodeLevel: LowercaseLevelEncoder
+  # 输出到file,console,multi
+  writer: multi
+  # 使能栈调式输出
+  stack: false
+  # 保存路径
+  path: temp
+
+  # 文件名,空字符使用默认
+  fileName: onlys.log
+  # 每个日志文件最大尺寸(MB) 默认100MB
+  maxSize: 0
+  # 日志文件保存天数, 默认0不删除
+  maxAge: 0
+  # 日志文件保存备份数, 默认0都保存
+  maxBackups: 0
+  # 是否格式化时间戳, 默认UTC时间
+  localTime: false
+  # 压缩文件,采用gzip, 默认不压缩
+  compress: false
+
+gops:
+  cleanup: true # 关闭清理资源,可选
+  addr: :8080 # host:port 监听地址,可选
+  configDir: . # 配置路径,存储gops的pid,文件名,端口号等 ,可选
