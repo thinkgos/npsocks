@@ -4,7 +4,7 @@ name = onlys
 model = ${name}
 # 固件版本
 # git describe --tags `git rev-list --tags --max-count=1`
-version = v0.0.1 #`git describe --tags`
+version = `git describe --tags`
 # api版本
 apiVersion = v0.0.1
 # 设置固件名称
