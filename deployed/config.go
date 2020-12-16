@@ -56,6 +56,7 @@ func LoadConfig(filename string) error {
 	return viper.ReadInConfig()
 }
 
+// 配置路径 $HOME/.config/{builder.Name}
 func ConfigPath() string {
 	home, err := homedir.Dir()
 	infra.HandlerError(err)

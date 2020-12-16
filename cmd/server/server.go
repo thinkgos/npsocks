@@ -50,7 +50,7 @@ func setup(cmd *cobra.Command, args []string) {
 	// 1. 读取配置
 	deployed.SetupConfig(configFile)
 	deployed.SetupLogger()
-	infra.WritePidFile(deployed.ConfigPath())
+	infra.WritePidFile(deployed.ConfigPath()) // nolint: errcheck
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -71,9 +71,7 @@ func run(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	go func() {
-		server.Serve(ln)
-	}()
+	go server.Serve(ln) // nolint: errcheck
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
@@ -86,7 +84,7 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 func postRun(*cobra.Command, []string) {
-	infra.RemovePidFile(deployed.ConfigPath())
+	infra.RemovePidFile(deployed.ConfigPath()) // nolint: errcheck
 }
 
 func showTip() {
