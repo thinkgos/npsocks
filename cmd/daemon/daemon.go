@@ -15,8 +15,12 @@ var CmdInstall = &cobra.Command{
 	Short:   "Install the daemon server",
 	Example: fmt.Sprintf("%s install", builder.Name),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := srv.Install("server")
-		return err
+		str, err := srv.Install("server")
+		if err != nil {
+			return err
+		}
+		fmt.Println(str)
+		return nil
 	},
 }
 var CmdRemove = &cobra.Command{
@@ -24,8 +28,12 @@ var CmdRemove = &cobra.Command{
 	Short:   "Remove the daemon server",
 	Example: fmt.Sprintf("%s remove", builder.Name),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := srv.Remove()
-		return err
+		str, err := srv.Remove()
+		if err != nil {
+			return err
+		}
+		fmt.Println(str)
+		return nil
 	},
 }
 var CmdStart = &cobra.Command{
@@ -33,8 +41,12 @@ var CmdStart = &cobra.Command{
 	Short:   "Start the daemon server",
 	Example: fmt.Sprintf("%s start", builder.Name),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := srv.Start()
-		return err
+		str, err := srv.Start()
+		if err != nil {
+			return err
+		}
+		fmt.Println(str)
+		return nil
 	},
 }
 var CmdStop = &cobra.Command{
@@ -42,8 +54,12 @@ var CmdStop = &cobra.Command{
 	Short:   "Stop the daemon server",
 	Example: fmt.Sprintf("%s stop", builder.Name),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := srv.Stop()
-		return err
+		str, err := srv.Stop()
+		if err != nil {
+			return err
+		}
+		fmt.Println(str)
+		return nil
 	},
 }
 var CmdStatus = &cobra.Command{
@@ -51,7 +67,11 @@ var CmdStatus = &cobra.Command{
 	Short:   "Get the daemon server status",
 	Example: fmt.Sprintf("%s status", builder.Name),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, err := srv.Status()
-		return err
+		str, err := srv.Status()
+		if err != nil {
+			return err
+		}
+		fmt.Println(str)
+		return nil
 	},
 }
