@@ -9,9 +9,9 @@ import (
 	"github.com/thinkgos/go-core-package/builder"
 	"github.com/thinkgos/go-core-package/lib/textcolor"
 
-	"github.com/thinkgos/only-socks5/cmd/daemon"
-	"github.com/thinkgos/only-socks5/cmd/server"
-	"github.com/thinkgos/only-socks5/cmd/version"
+	"github.com/thinkgos/npsocks/cmd/daemon"
+	"github.com/thinkgos/npsocks/cmd/server"
+	"github.com/thinkgos/npsocks/cmd/version"
 )
 
 func init() {

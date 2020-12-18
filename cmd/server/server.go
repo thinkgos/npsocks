@@ -17,12 +17,12 @@ import (
 	"github.com/thinkgos/go-socks5"
 
 	"github.com/thinkgos/go-core-package/builder"
-	"github.com/thinkgos/only-socks5/deployed"
-	"github.com/thinkgos/only-socks5/pkg/cdir"
-	"github.com/thinkgos/only-socks5/pkg/infra"
-	"github.com/thinkgos/only-socks5/pkg/izap"
-	"github.com/thinkgos/only-socks5/pkg/sword"
-	"github.com/thinkgos/only-socks5/pkg/tip"
+
+	"github.com/thinkgos/npsocks/deployed"
+	"github.com/thinkgos/npsocks/pkg/cdir"
+	"github.com/thinkgos/npsocks/pkg/infra"
+	"github.com/thinkgos/npsocks/pkg/izap"
+	"github.com/thinkgos/npsocks/pkg/tip"
 )
 
 var configFile string
@@ -74,7 +74,7 @@ func run(cmd *cobra.Command, args []string) error {
 	// Create a SOCKS5 server
 	server := socks5.NewServer(
 		socks5.WithLogger(izap.Sugar),
-		socks5.WithGPool(sword.AntsPool),
+		socks5.WithGPool(deployed.AntsPool),
 	)
 	ln, err := net.Listen("tcp", deployed.AppConfig.Addr())
 	if err != nil {

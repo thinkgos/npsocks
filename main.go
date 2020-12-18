@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/thinkgos/only-socks5/cmd"
+	"github.com/thinkgos/npsocks/cmd"
 )
 
 func main() {

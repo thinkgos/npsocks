@@ -1,3 +1,3 @@
-# only-socks5
+# npsocks
 
 socks5 应用服务

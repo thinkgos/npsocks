@@ -1,7 +1,7 @@
 package deployed
 
 import (
-	"github.com/thinkgos/only-socks5/pkg/izap"
+	"github.com/thinkgos/npsocks/pkg/izap"
 )
 
 func SetupLogger() {

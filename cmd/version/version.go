@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/thinkgos/go-core-package/builder"
 
-	"github.com/thinkgos/only-socks5/pkg/tip"
+	"github.com/thinkgos/npsocks/pkg/tip"
 )
 
 var Cmd = &cobra.Command{

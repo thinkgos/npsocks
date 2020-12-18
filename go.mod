@@ -1,4 +1,4 @@
-module github.com/thinkgos/only-socks5
+module github.com/thinkgos/npsocks
 
 go 1.15
 

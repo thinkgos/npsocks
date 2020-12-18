@@ -2,7 +2,7 @@ package deployed
 
 import (
 	"github.com/spf13/viper"
-	"github.com/thinkgos/only-socks5/pkg/izap"
+	"github.com/thinkgos/npsocks/pkg/izap"
 )
 
 func ViperLoggerDefault() {

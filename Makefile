@@ -1,5 +1,5 @@
 # 应用名称
-name = onlys
+name = npsocks
 # 型号
 model = ${name}
 # 固件版本

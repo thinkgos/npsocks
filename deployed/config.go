@@ -10,7 +10,7 @@ import (
 	"github.com/thinkgos/go-core-package/extos"
 	"github.com/thinkgos/go-core-package/lib/habit"
 
-	"github.com/thinkgos/only-socks5/pkg/cdir"
+	"github.com/thinkgos/npsocks/pkg/cdir"
 )
 
 var AppConfig = new(Application)
