@@ -19,11 +19,20 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/takama/daemon"
+	"github.com/thinkgos/go-core-package/extos"
 
 	"github.com/thinkgos/go-core-package/builder"
 )
 
-var srv, _ = daemon.New(builder.Name, "Service", daemon.SystemDaemon)
+var srv, _ = daemon.New(
+	builder.Name,
+	builder.Name+" Service",
+	func() daemon.Kind {
+		if extos.IsMac() {
+			return daemon.UserAgent
+		}
+		return daemon.SystemDaemon
+	}())
 var CmdInstall = &cobra.Command{
 	Use:     "install",
 	Short:   "Install the daemon server",
@@ -37,6 +46,7 @@ var CmdInstall = &cobra.Command{
 		return nil
 	},
 }
+
 var CmdRemove = &cobra.Command{
 	Use:     "remove",
 	Short:   "Remove the daemon server",

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package daemon
 
 import (
 	"fmt"
@@ -26,6 +26,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/thinkgos/go-core-package/extos"
 	"github.com/thinkgos/go-core-package/lib/habit"
 	"github.com/thinkgos/go-core-package/lib/textcolor"
 	"github.com/thinkgos/go-socks5"
@@ -42,7 +43,7 @@ import (
 var configFile string
 var port string
 var mode string
-var Cmd = &cobra.Command{
+var CmdServer = &cobra.Command{
 	Use:          "server",
 	Short:        "Start API server",
 	Example:      fmt.Sprintf("%s server -c config.yaml", builder.Name),
@@ -53,9 +54,9 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", fmt.Sprintf("config file(default is $HOME/.config/%s/.%s.yaml)", builder.Name, builder.Name))
-	Cmd.PersistentFlags().StringVarP(&port, "port", "p", "10800", "Tcp port server listening on")
-	Cmd.PersistentFlags().StringVarP(&mode, "mode", "m", "prod", "server mode ; eg:dev,debug,prod")
+	CmdServer.PersistentFlags().StringVarP(&configFile, "config", "c", "", fmt.Sprintf("config file(default is $HOME/.config/%s/.%s.yaml)", builder.Name, builder.Name))
+	CmdServer.PersistentFlags().StringVarP(&port, "port", "p", "10800", "Tcp port server listening on")
+	CmdServer.PersistentFlags().StringVarP(&mode, "mode", "m", "prod", "server mode ; eg:dev,debug,prod")
 }
 
 func setup(cmd *cobra.Command, args []string) {
@@ -76,34 +77,14 @@ func setup(cmd *cobra.Command, args []string) {
 	}
 }
 
-func run(cmd *cobra.Command, args []string) error {
-	fmt.Println(textcolor.Red("starting server..."))
-
-	go func() {
-		infra.HandlerError(agent.Listen(deployed.ViperGops()))
-	}()
-
-	showTip()
-
-	// Create a SOCKS5 server
-	server := socks5.NewServer(
-		socks5.WithLogger(izap.Sugar),
-		socks5.WithGPool(deployed.AntsPool),
-	)
-	ln, err := net.Listen("tcp", deployed.AppConfig.Addr())
-	if err != nil {
-		return err
+func run(*cobra.Command, []string) (err error) {
+	exec := &Executable{}
+	if extos.IsWindows() {
+		_, err = srv.Run(exec)
+	} else {
+		exec.Run()
 	}
-	go server.Serve(ln) // nolint: errcheck
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-
-	<-stop
-
-	fmt.Println(textcolor.Red("close server..."))
-
-	return ln.Close()
+	return
 }
 
 func postRun(*cobra.Command, []string) {
@@ -130,4 +111,38 @@ func showTip() {
 		Kill:        textcolor.Magenta("Control + C"),
 	}
 	tip.Show(t)
+}
+
+type Executable struct{}
+
+func (Executable) Start() {}
+func (Executable) Stop()  {}
+func (Executable) Run() {
+	fmt.Println(textcolor.Red("starting server..."))
+
+	go func() {
+		infra.HandlerError(agent.Listen(deployed.ViperGops()))
+	}()
+
+	showTip()
+
+	// Create a SOCKS5 server
+	server := socks5.NewServer(
+		socks5.WithLogger(izap.Sugar),
+		socks5.WithGPool(deployed.AntsPool),
+	)
+	ln, err := net.Listen("tcp", deployed.AppConfig.Addr())
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	go server.Serve(ln) // nolint: errcheck
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	<-stop
+
+	fmt.Println(textcolor.Red("close server..."))
+	ln.Close()
 }

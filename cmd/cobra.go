@@ -24,14 +24,13 @@ import (
 	"github.com/thinkgos/go-core-package/lib/textcolor"
 
 	"github.com/thinkgos/npsocks/cmd/daemon"
-	"github.com/thinkgos/npsocks/cmd/server"
 	"github.com/thinkgos/npsocks/cmd/version"
 )
 
 func init() {
 	rootCmd.AddCommand(
 		version.Cmd,
-		server.Cmd,
+		daemon.CmdServer,
 		daemon.CmdInstall,
 		daemon.CmdRemove,
 		daemon.CmdStart,
