@@ -18,10 +18,14 @@ BinDir=${CURDIR}/bin
 
 # 编译平台
 platform = CGO_ENABLED=0
+ifeq (${MAKECMDGOALS},windows)
+	platform += GOOS=windows GOARCH=amd64
+	execveFile = ${firmwareName}.exe
+endif
 # 编译选项,如tags,多个采用','分开 noswag
 opts = -trimpath
 # 编译flags
-path = github.com/thinkgos/only-socks5/pkg/builder
+path = github.com/thinkgos/go-core-package/builder
 flags = -ldflags "-X '${path}.BuildTime=`date "+%F %T %z"`' \
 	-X '${path}.GitCommit=`git rev-parse --short=8 HEAD`' \
 	-X '${path}.GitFullCommit=`git rev-parse HEAD`' \
@@ -37,6 +41,8 @@ system:
 	@#upx --best --lzma ${BinDir}/${execveFile}
 	@#bzip2 -c ${BinDir}/${execveFile} > ${BinDir}/${execveFile}.bz2
 	@echo "----> system executable build successful"
+
+windows: system
 
 run: system
 	@${BinDir}/${execveFile} server

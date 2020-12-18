@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"os/signal"
@@ -11,11 +12,13 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/thinkgos/go-core-package/lib/habit"
 	"github.com/thinkgos/go-core-package/lib/textcolor"
 	"github.com/thinkgos/go-socks5"
 
+	"github.com/thinkgos/go-core-package/builder"
 	"github.com/thinkgos/only-socks5/deployed"
-	"github.com/thinkgos/only-socks5/pkg/builder"
+	"github.com/thinkgos/only-socks5/pkg/cdir"
 	"github.com/thinkgos/only-socks5/pkg/infra"
 	"github.com/thinkgos/only-socks5/pkg/izap"
 	"github.com/thinkgos/only-socks5/pkg/sword"
@@ -50,7 +53,8 @@ func setup(cmd *cobra.Command, args []string) {
 	// 1. 读取配置
 	deployed.SetupConfig(configFile)
 	deployed.SetupLogger()
-	infra.WritePidFile(deployed.ConfigPath()) // nolint: errcheck
+	err := habit.WritePidFile(cdir.ConfigDir(builder.Name)) // nolint: errcheck
+	log.Println(err)
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -84,7 +88,8 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 func postRun(*cobra.Command, []string) {
-	infra.RemovePidFile(deployed.ConfigPath()) // nolint: errcheck
+	agent.Close()
+	habit.RemovePidFile(cdir.ConfigDir(builder.Name)) // nolint: errcheck
 }
 
 func showTip() {

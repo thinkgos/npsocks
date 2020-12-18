@@ -2,14 +2,15 @@ package deployed
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 
-	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
+	"github.com/thinkgos/go-core-package/builder"
 	"github.com/thinkgos/go-core-package/extos"
+	"github.com/thinkgos/go-core-package/lib/habit"
 
-	"github.com/thinkgos/only-socks5/pkg/builder"
-	"github.com/thinkgos/only-socks5/pkg/infra"
+	"github.com/thinkgos/only-socks5/pkg/cdir"
 )
 
 var AppConfig = new(Application)
@@ -38,10 +39,11 @@ func LoadConfig(filename string) error {
 	if filename != "" {
 		viper.SetConfigFile(filename)
 	} else {
-		configPath := ConfigPath()
+		configPath := cdir.ConfigDir(builder.Name)
 		defaultConfigName := "." + builder.Name
 		filePath := filepath.Join(configPath, defaultConfigName+".yaml")
 		if !extos.IsExist(filePath) {
+			os.MkdirAll(configPath, 0755) // nolint: errcheck
 			if err := extos.WriteFile(filePath, []byte("")); err != nil {
 				return err
 			}
@@ -56,21 +58,14 @@ func LoadConfig(filename string) error {
 	return viper.ReadInConfig()
 }
 
-// 配置路径 $HOME/.config/{builder.Name}
-func ConfigPath() string {
-	home, err := homedir.Dir()
-	infra.HandlerError(err)
-	return filepath.Join(home, ".config", builder.Name)
-}
-
 func IsModeDebug() bool {
-	return AppConfig.Mode == infra.ModeDebug
+	return habit.IsModeDebug(AppConfig.Mode)
 }
 
 func IsModeProd() bool {
-	return AppConfig.Mode == infra.ModeProd
+	return habit.IsModeProd(AppConfig.Mode)
 }
 
 func IsModeDev() bool {
-	return AppConfig.Mode == infra.ModeDev
+	return habit.IsModeDev(AppConfig.Mode)
 }

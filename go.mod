@@ -18,13 +18,12 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/takama/daemon v1.0.0
-	github.com/thinkgos/go-core-package v0.1.7
+	github.com/thinkgos/go-core-package v0.1.9
 	github.com/thinkgos/go-socks5 v0.2.2
 	github.com/thinkgos/sharp v0.4.0
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect
-	golang.org/x/sys v0.0.0-20201214210602-f9fddec55a1e // indirect
 	golang.org/x/text v0.3.4 // indirect
 	golang.org/x/tools v0.0.0-20201103235415-b653051172e4 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect

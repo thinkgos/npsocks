@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/takama/daemon"
 
-	"github.com/thinkgos/only-socks5/pkg/builder"
+	"github.com/thinkgos/go-core-package/builder"
 )
 
 var srv, _ = daemon.New(builder.Name, "Service", daemon.SystemDaemon)
