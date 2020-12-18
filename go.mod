@@ -20,7 +20,6 @@ require (
 	github.com/takama/daemon v1.0.0
 	github.com/thinkgos/go-core-package v0.1.9
 	github.com/thinkgos/go-socks5 v0.2.2
-	github.com/thinkgos/sharp v0.4.0
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect

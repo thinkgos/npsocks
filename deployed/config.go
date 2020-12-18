@@ -39,7 +39,10 @@ func LoadConfig(filename string) error {
 	if filename != "" {
 		viper.SetConfigFile(filename)
 	} else {
-		configPath := cdir.ConfigDir(builder.Name)
+		configPath, err := cdir.ConfigDir(builder.Name)
+		if err != nil {
+			return err
+		}
 		defaultConfigName := "." + builder.Name
 		filePath := filepath.Join(configPath, defaultConfigName+".yaml")
 		if !extos.IsExist(filePath) {

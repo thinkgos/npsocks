@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/thinkgos/sharp/builder"
+	"github.com/thinkgos/go-core-package/builder"
 
 	"github.com/thinkgos/only-socks5/pkg/tip"
 )

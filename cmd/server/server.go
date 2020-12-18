@@ -53,8 +53,13 @@ func setup(cmd *cobra.Command, args []string) {
 	// 1. 读取配置
 	deployed.SetupConfig(configFile)
 	deployed.SetupLogger()
-	err := habit.WritePidFile(cdir.ConfigDir(builder.Name)) // nolint: errcheck
-	log.Println(err)
+	configDir, err := cdir.ConfigDir(builder.Name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err = habit.WritePidFile(configDir); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -89,7 +94,12 @@ func run(cmd *cobra.Command, args []string) error {
 
 func postRun(*cobra.Command, []string) {
 	agent.Close()
-	habit.RemovePidFile(cdir.ConfigDir(builder.Name)) // nolint: errcheck
+	configDir, err := cdir.ConfigDir(builder.Name)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	habit.RemovePidFile(configDir) // nolint: errcheck
 }
 
 func showTip() {
