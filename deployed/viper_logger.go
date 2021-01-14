@@ -15,7 +15,12 @@
 package deployed
 
 import (
+	"os"
+	"path"
+
 	"github.com/spf13/viper"
+	"github.com/thinkgos/go-core-package/builder"
+
 	"github.com/thinkgos/npsocks/pkg/izap"
 )
 
@@ -23,10 +28,11 @@ func ViperLoggerDefault() {
 	viper.SetDefault("logger.level", "error")
 	viper.SetDefault("logger.console", "console")
 	viper.SetDefault("logger.encodeLevel", "LowercaseLevelEncoder")
-	viper.SetDefault("logger.writer", "console")
-	viper.SetDefault("logger.path", "temp")
+	viper.SetDefault("logger.writer", "file")
+	viper.SetDefault("logger.path", path.Join(os.TempDir(), builder.Name))
 
 	viper.SetDefault("logger.fileName", "npsocks.log")
+	viper.SetDefault("logger.maxAge", 3)
 }
 
 func ViperLogger() izap.Config {
