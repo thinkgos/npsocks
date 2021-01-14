@@ -18,7 +18,9 @@ BinDir=${CURDIR}/bin
 
 # 编译平台
 platform = CGO_ENABLED=0
-ifeq (${MAKECMDGOALS},windows)
+ifeq (${MAKECMDGOALS},arm7)
+	platform += GOOS=linux GOARCH=arm GOARM=7
+else ifeq  (${MAKECMDGOALS},windows)
 	platform += GOOS=windows GOARCH=amd64
 	execveFile = ${firmwareName}.exe
 endif
@@ -43,7 +45,7 @@ system:
 	@echo "----> system executable build successful"
 
 windows: system
-
+arm7: system
 run: system
 	@${BinDir}/${execveFile} server
 

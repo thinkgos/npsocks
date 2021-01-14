@@ -61,8 +61,8 @@ func init() {
 
 func setup(cmd *cobra.Command, args []string) {
 	viper.BindPFlags(cmd.Flags()) // nolint: errcheck
-	// viper.SetEnvPrefix("onlys")
-	// // ONLYS_CONFIGFILE
+	// viper.SetEnvPrefix("npsocks")
+	// // NPSOCKS_CONFIGFILE
 	// viper.BindEnv("config") // nolint: errcheck
 
 	// 1. 读取配置

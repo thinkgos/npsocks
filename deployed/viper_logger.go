@@ -26,7 +26,7 @@ func ViperLoggerDefault() {
 	viper.SetDefault("logger.writer", "console")
 	viper.SetDefault("logger.path", "temp")
 
-	viper.SetDefault("logger.fileName", "onlys.log")
+	viper.SetDefault("logger.fileName", "npsocks.log")
 }
 
 func ViperLogger() izap.Config {

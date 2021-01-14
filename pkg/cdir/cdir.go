@@ -22,7 +22,7 @@ import (
 	"github.com/mitchellh/go-homedir"
 )
 
-const configDirEnvKey = "ONLYS_CONFIG_DIR"
+const configDirEnvKey = "NPSOCKS_CONFIG_DIR"
 
 // ConfigDir 配置路径
 // windows: $APPDATA/{name}

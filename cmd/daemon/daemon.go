@@ -33,6 +33,7 @@ var srv, _ = daemon.New(
 		}
 		return daemon.SystemDaemon
 	}())
+
 var CmdInstall = &cobra.Command{
 	Use:     "install",
 	Short:   "Install the daemon server",
@@ -60,6 +61,7 @@ var CmdRemove = &cobra.Command{
 		return nil
 	},
 }
+
 var CmdStart = &cobra.Command{
 	Use:     "start",
 	Short:   "Start the daemon server",
@@ -73,6 +75,7 @@ var CmdStart = &cobra.Command{
 		return nil
 	},
 }
+
 var CmdStop = &cobra.Command{
 	Use:     "stop",
 	Short:   "Stop the daemon server",
@@ -86,6 +89,7 @@ var CmdStop = &cobra.Command{
 		return nil
 	},
 }
+
 var CmdStatus = &cobra.Command{
 	Use:     "status",
 	Short:   "Get the daemon server status",
