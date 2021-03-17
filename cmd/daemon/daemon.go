@@ -19,9 +19,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/takama/daemon"
-	"github.com/thinkgos/go-core-package/extos"
-
-	"github.com/thinkgos/go-core-package/builder"
+	"github.com/thinkgos/x/builder"
+	"github.com/thinkgos/x/extos"
 )
 
 var srv, _ = daemon.New(

@@ -26,12 +26,10 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/thinkgos/go-core-package/extos"
-	"github.com/thinkgos/go-core-package/lib/habit"
-	"github.com/thinkgos/go-core-package/lib/textcolor"
 	"github.com/thinkgos/go-socks5"
-
-	"github.com/thinkgos/go-core-package/builder"
+	"github.com/thinkgos/x/builder"
+	"github.com/thinkgos/x/lib/habit"
+	"github.com/thinkgos/x/lib/textcolor"
 
 	"github.com/thinkgos/npsocks/deployed"
 	"github.com/thinkgos/npsocks/pkg/cdir"
@@ -78,12 +76,7 @@ func setup(cmd *cobra.Command, args []string) {
 }
 
 func run(*cobra.Command, []string) (err error) {
-	exec := &Executable{}
-	if extos.IsWindows() {
-		_, err = srv.Run(exec)
-	} else {
-		exec.Run()
-	}
+	_, err = srv.Run(Executable{})
 	return
 }
 

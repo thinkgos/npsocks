@@ -27,7 +27,7 @@ endif
 # 编译选项,如tags,多个采用','分开 noswag
 opts = -trimpath
 # 编译flags
-path = github.com/thinkgos/go-core-package/builder
+path = github.com/thinkgos/x/builder
 flags = -ldflags "-X '${path}.BuildTime=`date "+%F %T %z"`' \
 	-X '${path}.GitCommit=`git rev-parse --short=8 HEAD`' \
 	-X '${path}.GitFullCommit=`git rev-parse HEAD`' \

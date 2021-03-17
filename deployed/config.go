@@ -20,9 +20,9 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/viper"
-	"github.com/thinkgos/go-core-package/builder"
-	"github.com/thinkgos/go-core-package/extos"
-	"github.com/thinkgos/go-core-package/lib/habit"
+	"github.com/thinkgos/x/builder"
+	"github.com/thinkgos/x/extos"
+	"github.com/thinkgos/x/lib/habit"
 
 	"github.com/thinkgos/npsocks/pkg/cdir"
 )

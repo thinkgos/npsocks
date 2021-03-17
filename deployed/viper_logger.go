@@ -19,7 +19,7 @@ import (
 	"path"
 
 	"github.com/spf13/viper"
-	"github.com/thinkgos/go-core-package/builder"
+	"github.com/thinkgos/x/builder"
 
 	"github.com/thinkgos/npsocks/pkg/izap"
 )
